@@ -1,7 +1,7 @@
 from flax import nnx  # The Flax NNX API.
 import jax.numpy as jnp  # JAX NumPy
 import LRU
-import layer_parameterisation
+import layer_parameterization
 import jax
 
 
@@ -28,7 +28,7 @@ class LRUMLP_layer(nnx.Module):
         rngs: nnx.Rngs,
     ):
 
-        self.lin_encoder = layer_parameterisation.Linear_encoder(
+        self.lin_encoder = layer_parameterization.Linear_encoder(
             in_features=token_size,
             out_features=encoded_dim,
             rngs=rngs,
@@ -79,7 +79,7 @@ class LRUMLP_layer(nnx.Module):
             r_max=r_max,
             max_phase=max_phase,
         )
-        self.linear1_1 = layer_parameterisation.Linear_MLP1(
+        self.linear1_1 = layer_parameterization.Linear_MLP1(
             in_features=encoded_dim,
             out_features=layer_dim,
             rngs=rngs,
@@ -87,7 +87,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP1_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear1_2 = layer_parameterisation.Linear_MLP2(
+        self.linear1_2 = layer_parameterization.Linear_MLP2(
             in_features=layer_dim // 2,
             out_features=encoded_dim,
             rngs=rngs,
@@ -95,7 +95,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP2_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear2_1 = layer_parameterisation.Linear_MLP1(
+        self.linear2_1 = layer_parameterization.Linear_MLP1(
             in_features=encoded_dim,
             out_features=layer_dim,
             rngs=rngs,
@@ -103,7 +103,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP1_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear2_2 = layer_parameterisation.Linear_MLP2(
+        self.linear2_2 = layer_parameterization.Linear_MLP2(
             in_features=layer_dim // 2,
             out_features=encoded_dim,
             rngs=rngs,
@@ -111,7 +111,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP2_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear3_1 = layer_parameterisation.Linear_MLP1(
+        self.linear3_1 = layer_parameterization.Linear_MLP1(
             in_features=encoded_dim,
             out_features=layer_dim,
             rngs=rngs,
@@ -119,7 +119,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP1_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear3_2 = layer_parameterisation.Linear_MLP2(
+        self.linear3_2 = layer_parameterization.Linear_MLP2(
             in_features=layer_dim // 2,
             out_features=encoded_dim,
             rngs=rngs,
@@ -127,7 +127,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP2_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear4_1 = layer_parameterisation.Linear_MLP1(
+        self.linear4_1 = layer_parameterization.Linear_MLP1(
             in_features=encoded_dim,
             out_features=layer_dim,
             rngs=rngs,
@@ -135,7 +135,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP1_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear4_2 = layer_parameterisation.Linear_MLP2(
+        self.linear4_2 = layer_parameterization.Linear_MLP2(
             in_features=layer_dim // 2,
             out_features=encoded_dim,
             rngs=rngs,
@@ -143,7 +143,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP2_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear5_1 = layer_parameterisation.Linear_MLP1(
+        self.linear5_1 = layer_parameterization.Linear_MLP1(
             in_features=encoded_dim,
             out_features=layer_dim,
             rngs=rngs,
@@ -151,7 +151,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP1_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear5_2 = layer_parameterisation.Linear_MLP2(
+        self.linear5_2 = layer_parameterization.Linear_MLP2(
             in_features=layer_dim // 2,
             out_features=encoded_dim,
             rngs=rngs,
@@ -159,7 +159,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP2_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear6_1 = layer_parameterisation.Linear_MLP1(
+        self.linear6_1 = layer_parameterization.Linear_MLP1(
             in_features=encoded_dim,
             out_features=layer_dim,
             rngs=rngs,
@@ -167,7 +167,7 @@ class LRUMLP_layer(nnx.Module):
                 scale=MLP1_sigma, mode="fan_in", distribution="truncated_normal"
             ),
         )
-        self.linear6_2 = layer_parameterisation.Linear_MLP2(
+        self.linear6_2 = layer_parameterization.Linear_MLP2(
             in_features=layer_dim // 2,
             out_features=encoded_dim,
             rngs=rngs,
@@ -187,7 +187,7 @@ class LRUMLP_layer(nnx.Module):
             self.linear3 = lambda x: jnp.mean(x, axis=1)
         else:  # learn the parameters of the linear transformation
             self.linear3 = nnx.Linear(in_features=token_len, out_features=1, rngs=rngs)
-        self.linear4 = layer_parameterisation.Linear_out(
+        self.linear4 = layer_parameterization.Linear_out(
             in_features=encoded_dim,
             out_features=out_dim,
             rngs=rngs,
